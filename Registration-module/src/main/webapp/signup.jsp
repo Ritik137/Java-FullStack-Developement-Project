@@ -4,17 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<!-- Compiled and minified CSS -->
+<title>Register</title>
+
+<!-- Materialize CSS -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-<!-- Compiled and minified JavaScript -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
-
 </head>
+
 <body
 	style="background: url(img/img.jpg); background-size: cover; background-attachment: fixed;">
 
@@ -24,27 +21,95 @@
 
 				<div class="card" style="border-radius: 10px;">
 					<div class="card-content">
-						<h3 style="margin-top: 10px" class="center-align">Register
-							here !!</h3>
+
+						<h3 class="center-align">Register Here !!</h3>
 
 						<div class="form center-align">
-							<!-- creating form -->
-							<form action="signup" method="post">
-								<input type="text" name="user_name"  placeholder="Enter user name" />
-								<input type="password" name="user_password" placeholder="Enter user password" /> 
-								<input type="email" name="user_email" placeholder="Enter user email" />
 
+							<form id="myform">
+
+								<input type="text" name="user_name"
+									placeholder="Enter user name" required /> <input
+									type="password" name="user_password"
+									placeholder="Enter user password" required /> <input
+									type="email" name="user_email" placeholder="Enter user email"
+									required />
+
+
+								<div class="file-field input-field">
+									<div class="btn">
+										<span>File</span> <input name="image" type="file">
+									</div>
+									<div class="file-path-wrapper">
+										<input class="file-path validate" type="text">
+									</div>
+								</div>
+								
 								<button type="submit" class="btn blue">Submit</button>
+
 							</form>
+
 						</div>
+
 						<div class="loader center-align" style="display: none;">
 							<div class="progress">
 								<div class="indeterminate"></div>
 							</div>
 							<h5>Please wait...</h5>
 						</div>
-						<script src="https://code.jquery.com/jquery-4.0.0.min.js"
-							integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao="
-							crossorigin="anonymous"></script>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- jQuery FIRST -->
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+	<!-- Materialize JS AFTER jQuery -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+	<!-- Custom Script -->
+	<script>
+$(document).ready(function(){
+
+    console.log("Page loaded...");
+
+    $("#myform").submit(function(event){
+        event.preventDefault();
+
+        $(".loader").show();
+
+        // var formData = $(this).serialize();
+        let formData = new FormData(this);
+        console.log(formData);
+
+        $.ajax({
+            url: "<%=request.getContextPath()%>/signup",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+
+            success: function(response) {
+                $(".loader").hide();
+                alert("User Registered Successfully!");
+                console.log(response);
+                $("#myform")[0].reset();
+            },
+
+            error: function() {
+                $(".loader").hide();
+                alert("Something went wrong!");
+            }
+        });
+			});
+
+		});
+	</script>
+
 </body>
 </html>
